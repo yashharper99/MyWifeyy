@@ -299,19 +299,4 @@ body {
   }
 }
 
-#sound-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-#sound-icon {
-  width: 100%;
-  transition: opacity 0.3s;
-}
-
 
