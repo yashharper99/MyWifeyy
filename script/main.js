@@ -303,3 +303,36 @@ const resolveFetch = () => {
 };
 
 resolveFetch().then(animationTimeline());
+
+document.addEventListener("DOMContentLoaded", function () {
+  const audio = document.getElementById("valentine-music");
+  const soundToggle = document.getElementById("sound-toggle");
+  const soundIcon = document.getElementById("sound-icon");
+
+  // Ensure autoplay works after user interaction
+  document.addEventListener("click", function startMusic() {
+    audio.play().catch(error => console.log("Autoplay prevented:", error));
+    document.removeEventListener("click", startMusic);
+  });
+
+  soundToggle.addEventListener("click", function () {
+    if (audio.muted) {
+      audio.muted = false;
+      soundIcon.innerHTML = `
+        <path d="M12 18H4V30H12L24 40V8L12 18Z" fill="black"/>
+        <path d="M30.07 17.93C32.49 20.35 32.49 23.65 30.07 26.07" stroke="black" stroke-width="4"/>
+        <path d="M34.97 13.03C39.86 17.92 39.86 26.08 34.97 30.97" stroke="black" stroke-width="4"/>
+      `;
+    } else {
+      audio.muted = true;
+      soundIcon.innerHTML = `
+        <path d="M12 18H4V30H12L24 40V8L12 18Z" fill="black"/>
+        <path d="M30 30L18 18" stroke="red" stroke-width="4"/>
+        <path d="M30 18L18 30" stroke="red" stroke-width="4"/>
+      `;
+    }
+  });
+});
+
+
+
