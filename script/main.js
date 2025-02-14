@@ -310,22 +310,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set volume to 50%
   audio.volume = 0.5;
 
-  // Play audio automatically after interaction
-  function enableAudio() {
-    audio.play()
-      .then(() => console.log("Music started"))
-      .catch(error => console.log("Autoplay prevented, waiting for user interaction."));
-    
-    // Remove the event listener after the first interaction
-    document.removeEventListener("click", enableAudio);
-  }
+  // Try to play immediately
+  const playPromise = audio.play();
 
-  // Try to play immediately (some browsers allow autoplay with sound)
-  audio.play().catch(() => {
-    // If autoplay is blocked, wait for user interaction
-    document.addEventListener("click", enableAudio);
-  });
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log("Audio started playing");
+      })
+      .catch(() => {
+        console.log("Autoplay blocked. Waiting for user interaction...");
+
+        // Play on user interaction (click/tap)
+        function enableAudio() {
+          audio.play()
+            .then(() => console.log("Music started after user interaction"))
+            .catch(err => console.error("Error playing audio:", err));
+
+          document.removeEventListener("click", enableAudio);
+        }
+
+        document.addEventListener("click", enableAudio);
+      });
+  }
 });
+
 
 
 
