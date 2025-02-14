@@ -307,22 +307,19 @@ resolveFetch().then(animationTimeline());
 document.addEventListener("DOMContentLoaded", function () {
   const audio = document.getElementById("valentine-music");
 
-  // Ensure volume is set
+  // Set initial volume and muted to bypass autoplay restrictions
   audio.volume = 0.5;
-
-  function playAudio() {
-    audio.play()
-      .then(() => console.log("Music started! 🎶"))
-      .catch(err => console.warn("Autoplay blocked, waiting for user action...", err));
-  }
-
-  // First attempt to play
-  playAudio();
-
-  // Ensure it plays on user interaction
-  document.body.addEventListener("click", playAudio, { once: true });
-  document.body.addEventListener("touchstart", playAudio, { once: true });
+  audio.muted = true; // Start muted to trick autoplay policy
+  audio.play()
+    .then(() => {
+      setTimeout(() => {
+        audio.muted = false; // Unmute after a brief delay
+        console.log("Music unmuted and playing!");
+      }, 500); // Small delay to ensure smooth transition
+    })
+    .catch(err => console.warn("Autoplay blocked!", err));
 });
+
 
 
 
