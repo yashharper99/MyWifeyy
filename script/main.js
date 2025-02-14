@@ -306,34 +306,21 @@ resolveFetch().then(animationTimeline());
 
 document.addEventListener("DOMContentLoaded", function () {
   const audio = document.getElementById("valentine-music");
+  audio.volume = 0.5; // Medium volume
 
-  // Set volume to 50%
-  audio.volume = 0.5;
-
-  // Try to play immediately
-  const playPromise = audio.play();
-
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        console.log("Audio started playing");
-      })
-      .catch(() => {
-        console.log("Autoplay blocked. Waiting for user interaction...");
-
-        // Play on user interaction (click/tap)
-        function enableAudio() {
-          audio.play()
-            .then(() => console.log("Music started after user interaction"))
-            .catch(err => console.error("Error playing audio:", err));
-
-          document.removeEventListener("click", enableAudio);
-        }
-
-        document.addEventListener("click", enableAudio);
-      });
+  function playAudio() {
+    audio.play()
+      .then(() => console.log("Music started! 🎶"))
+      .catch(err => console.warn("Autoplay blocked, waiting for user click..."));
   }
+
+  // Attempt to play immediately
+  playAudio();
+
+  // Ensure it plays after user interaction (click/touch)
+  document.addEventListener("click", playAudio, { once: true });
 });
+
 
 
 
