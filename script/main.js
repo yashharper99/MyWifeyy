@@ -310,12 +310,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const soundIcon = document.getElementById("sound-icon");
 
   // Ensure autoplay works after user interaction
-  document.addEventListener("click", function startMusic() {
+  function enableAudio() {
     audio.play().catch(error => console.log("Autoplay prevented:", error));
-    document.removeEventListener("click", startMusic);
-  });
+    document.removeEventListener("click", enableAudio);
+  }
+  document.addEventListener("click", enableAudio);
 
-  soundToggle.addEventListener("click", function () {
+  // Toggle mute/unmute
+  soundToggle.addEventListener("click", function (event) {
+    event.stopPropagation(); // Prevents accidental page clicks affecting autoplay
     if (audio.muted) {
       audio.muted = false;
       soundIcon.innerHTML = `
@@ -333,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
 
 
 
