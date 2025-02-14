@@ -310,15 +310,23 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set volume to 50%
   audio.volume = 0.5;
 
-  // Ensure autoplay works after user interaction (some browsers block autoplay)
+  // Play audio automatically after interaction
   function enableAudio() {
     audio.play()
       .then(() => console.log("Music started"))
-      .catch(error => console.log("Autoplay prevented:", error));
+      .catch(error => console.log("Autoplay prevented, waiting for user interaction."));
+    
+    // Remove the event listener after the first interaction
     document.removeEventListener("click", enableAudio);
   }
-  document.addEventListener("click", enableAudio);
+
+  // Try to play immediately (some browsers allow autoplay with sound)
+  audio.play().catch(() => {
+    // If autoplay is blocked, wait for user interaction
+    document.addEventListener("click", enableAudio);
+  });
 });
+
 
 
 
